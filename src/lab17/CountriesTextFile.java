@@ -1,5 +1,6 @@
 package lab17;
 
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,12 +9,25 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class CountriesTextFile {
 	
 	
 	private static Path filePath = Paths.get("countries.txt");
+	
+	
+	public static void createNewFile(String pathName) {
+		Path path = Paths.get(pathName);
+		if (Files.notExists(path)) {
+			try {
+				Files.createFile(path);
+				System.out.println("File created at " + path.toAbsolutePath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 	
 	public static void checkForFile (Path filePath) throws IOException {
@@ -40,7 +54,7 @@ public class CountriesTextFile {
 			countries.add(c);
 		}
 		return countries;
-	}
+	} 
 	
 	public static void appendToFile(Country country) throws IOException {
 		if (Files.notExists(filePath)) {
@@ -50,6 +64,5 @@ public class CountriesTextFile {
 		List<String> countryList = Arrays.asList(country1);
 		Files.write(filePath, countryList, StandardOpenOption.APPEND);
 	}
-	
 	
 }

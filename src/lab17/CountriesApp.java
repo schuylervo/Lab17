@@ -1,49 +1,50 @@
 package lab17;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CountriesApp {
 
-	private static Path filePath = Paths.get("countries.txt");
 	
 	public static void main(String[] args) throws IOException {
 		Scanner scnr = new Scanner(System.in);
 		int userChoice;
-		// Country c = new Country(name, population);
 		
+		
+		CountriesTextFile.createNewFile("countries.txt");
 		
 		System.out.println("Welcome to the Countries Maintenance Application!");
 		
 		
 		do {
 			
-			userChoice = Validator.getInt(scnr, "Please enter a number from the list below \n 1 - see list of countries \n 2 - Add a country \n 3 - Exit", 1, 3);
+			userChoice = Validator.getInt(scnr, "\nPlease enter a number from the list below \n 1 - see list of countries \n 2 - Add a country \n 3 - Exit \n", 1, 3);
 		
 		
 			if (userChoice == 1) {
 				try {
-					CountriesTextFile.checkForFile(filePath);
+					
+					// create new countries.txt file if one does not already exist
+					CountriesTextFile.createNewFile("countries.txt");
+					System.out.println("Country, Population");
 					for (Country c : CountriesTextFile.readFile()) {
 						System.out.println(c);
 					}
 					CountriesTextFile.readFile();
-					} catch (IndexOutOfBoundsException e) {
-					
+					} catch (InputMismatchException e) {
+				System.out.println("Please input a number.");	
 				}
 			
 				
 			}
 		
 			else if (userChoice == 2) {
-				System.out.println("Please enter country: ");
-				String name = scnr.nextLine();
-				System.out.println("Please enter population: ");
-				int population = scnr.nextInt();
-				Country c1 = new Country(name, population);
-				CountriesTextFile.appendToFile(c1);
+				
+				String name= Validator.getString(scnr, "Please enter country: ");
+				int population= Validator.getInt(scnr, "Please enter population: ");
+				Country c = new Country(name, population);
+				CountriesTextFile.appendToFile(c);
 		
 			} else if (userChoice == 3) {
 			
